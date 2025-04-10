@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RiesgocrediticioApplication<riesgocrediticio>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rc_app.riesgocrediticio.RiesgocrediticioApplication",
+            "projectName": "riesgocrediticio",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
