@@ -25,7 +25,7 @@ CREATE TABLE `rol` (
 );
 
 CREATE TABLE `Persona` (
-  `id_persona` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_persona` INT PRIMARY KEY,
   `id_documento` INT,
   `id_rol` INT,
   `nombres` VARCHAR(50),
@@ -98,3 +98,4 @@ CREATE TABLE `informacion_financiera` (
   `fecha_actualizacion` DATE,
   FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
 );
+
