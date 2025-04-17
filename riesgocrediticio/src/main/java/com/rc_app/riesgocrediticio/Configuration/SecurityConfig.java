@@ -1,4 +1,4 @@
-package com.rc_app.riesgocrediticio.Configuration;
+package com.rc_app.riesgocrediticio.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

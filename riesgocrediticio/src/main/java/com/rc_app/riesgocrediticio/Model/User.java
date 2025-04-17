@@ -1,4 +1,4 @@
-package com.rc_app.riesgocrediticio.Model;
+package com.rc_app.riesgocrediticio.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,10 +1,10 @@
-package com.rc_app.riesgocrediticio.Service;
+package com.rc_app.riesgocrediticio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.rc_app.riesgocrediticio.Model.User;
+import com.rc_app.riesgocrediticio.model.User;
 import com.rc_app.riesgocrediticio.repository.UserRepository;
 
 @Service
@@ -17,7 +17,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User register(User user) {
-        
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

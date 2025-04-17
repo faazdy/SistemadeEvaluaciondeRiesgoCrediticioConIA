@@ -1,5 +1,6 @@
-package com.rc_app.riesgocrediticio.Controller;
+package com.rc_app.riesgocrediticio.controller;
 
+import com.rc_app.riesgocrediticio.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.rc_app.riesgocrediticio.Model.User;
-import com.rc_app.riesgocrediticio.Service.UserService;
+import com.rc_app.riesgocrediticio.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
