@@ -1,4 +1,4 @@
-CREATE DATABASE `riesgo_crediticio`;
+CREATE DATABASE IF NOT EXISTS `riesgo_crediticio`;
 USE `riesgo_crediticio`;
 CREATE TABLE `nivel_riesgos` (
   `id_nivel` INT AUTO_INCREMENT PRIMARY KEY,
@@ -98,4 +98,59 @@ CREATE TABLE `informacion_financiera` (
   `fecha_actualizacion` DATE,
   FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
 );
+
+INSERT INTO tipo_documento (tipo) VALUES ('C.C');
+
+INSERT INTO rol (rol) VALUES ('Cliente');
+
+INSERT INTO nivel_riesgos (nivel_riesgos) VALUES ('Alto');
+
+INSERT INTO estados_solicitud (estados) VALUES ('Pendiente');
+
+INSERT INTO tipo_contraro (contrato) VALUES ('Indefinido');
+
+INSERT INTO Persona (
+  id_persona, id_documento, id_rol, nombres, apellidos, telefono, email, direccion
+) VALUES (
+  1111111111, 1, 1, 'Pepito', 'Pérez', '3101234567', 'pepito.perez@gmail.com', 'calle 72A'
+);
+
+INSERT INTO Solicitudes (
+  id_persona, id_estados, monto_solicitado, fecha_solicitud
+) VALUES (
+  1111111111, 1, 5000000, '2025-04-17'
+);
+
+INSERT INTO evaluacion_riesgos (
+  id_solicitud, id_nivel, fecha_evaluacion, score
+) VALUES (
+  1, 1, '2025-04-17', 450.5
+);
+
+INSERT INTO empleos (
+  id_tipo_contrato, id_persona, empresa, cargo, fecha_inicio, fecha_fin, salario
+) VALUES (
+  1, 1111111111, 'prueba', 'prueba', '2020-01-15', '2025-04-01', 3500000
+);
+
+INSERT INTO informacion_financiera (
+  id_persona, id_empleo, ingresos_mensuales, egresos_mensuales, deudas, patrimonio, fecha_actualizacion
+) VALUES (
+  1111111111, 1, 3500000, 1500000, 1200000, 10000000, '2025-04-17'
+);
+
+INSERT INTO historial_credito (
+  id_persona, dias_mora, total_creditos, creditos_incumplidos
+) VALUES (
+  1111111111, 45, 3, 1
+);
+
+INSERT INTO usuarios (
+  id_persona, nombre_usuario, contraseña
+) VALUES (
+  1111111111, 'pepito.perez', '123456789'
+);
+
+
+
 
