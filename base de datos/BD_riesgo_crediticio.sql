@@ -151,6 +151,9 @@ INSERT INTO usuarios (
   1111111111, 'pepito.perez', '123456789'
 );
 
-
-
-
+RENAME TABLE `usuarios` TO `users`;
+ALTER TABLE `users` CHANGE `id_usuarios` `id` INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE `users` DROP FOREIGN KEY `usuarios_ibfk_1`;
+ALTER TABLE `users` DROP COLUMN `id_persona`;
+ALTER TABLE `users` CHANGE `nombre_usuario` `username` VARCHAR(25);
+ALTER TABLE `users` CHANGE `contraseña` `password` VARCHAR(10);
