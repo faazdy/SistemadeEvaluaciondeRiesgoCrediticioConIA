@@ -23,8 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Cambia esto a NoOpPasswordEncoder temporalmente si las contraseñas están en
-        // texto plano
+        
         return new BCryptPasswordEncoder();
     }
 
@@ -41,7 +40,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Solo para desarrollo
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/auth/login", "/auth/register").permitAll()  // Permitir el acceso sin autenticación
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .permitAll()

@@ -1,7 +1,9 @@
 package com.rc_app.riesgocrediticio.controller;
 
 import com.rc_app.riesgocrediticio.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,20 +16,25 @@ import com.rc_app.riesgocrediticio.service.UserService;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return userService.register(user);
     }
 
-    @GetMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
+    @GetMapping("/login") 
+    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         User user = userService.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            return "Login correcto";
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.ok("Login correcto");
         }
-        return "Credenciales inválidas";
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
     }
 }
