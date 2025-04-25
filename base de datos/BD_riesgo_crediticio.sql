@@ -1,159 +1,111 @@
 CREATE DATABASE IF NOT EXISTS `riesgo_crediticio`;
 USE `riesgo_crediticio`;
-CREATE TABLE `nivel_riesgos` (
-  `id_nivel` INT AUTO_INCREMENT PRIMARY KEY,
-  `nivel_riesgos` VARCHAR(10)
+
+CREATE TABLE `risk_levels` (
+  `risk_level_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `risk_level` VARCHAR(10)
 );
 
-CREATE TABLE `evaluacion_riesgos` (
-  `id_evaluación_riesgos` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_solicitud` INT,
-  `id_nivel` INT,
-  `fecha_evaluacion` DATE,
+CREATE TABLE `risk_assessments` (
+  `risk_assessment_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `application_id` INT,
+  `risk_level_id` INT,
+  `assessment_date` DATE,
   `score` FLOAT,
-  FOREIGN KEY (`id_nivel`) REFERENCES `nivel_riesgos`(`id_nivel`)
+  FOREIGN KEY (`risk_level_id`) REFERENCES `risk_levels`(`risk_level_id`)
 );
 
-CREATE TABLE `tipo_documento` (
-  `id_documento` INT AUTO_INCREMENT PRIMARY KEY,
-  `tipo` VARCHAR(20)
+CREATE TABLE `document_types` (
+  `document_type_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `type` VARCHAR(20)
 );
 
-CREATE TABLE `rol` (
-  `id_rol` INT AUTO_INCREMENT PRIMARY KEY,
-  `rol` VARCHAR(15)
+CREATE TABLE `roles` (
+  `role_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `role_name` VARCHAR(15)
 );
 
-CREATE TABLE `Persona` (
-  `id_persona` INT PRIMARY KEY,
-  `id_documento` INT,
-  `id_rol` INT,
-  `nombres` VARCHAR(50),
-  `apellidos` VARCHAR(50),
-  `telefono` VARCHAR(20),
+CREATE TABLE `people` (
+  `person_id` INT PRIMARY KEY,
+  `document_type_id` INT,
+  `role_id` INT,
+  `first_name` VARCHAR(50),
+  `last_name` VARCHAR(50),
+  `phone` VARCHAR(20),
   `email` VARCHAR(50),
-  `direccion` VARCHAR(150),
-  FOREIGN KEY (`id_documento`) REFERENCES `tipo_documento`(`id_documento`),
-  FOREIGN KEY (`id_rol`) REFERENCES `rol`(`id_rol`)
+  `address` VARCHAR(150),
+  FOREIGN KEY (`document_type_id`) REFERENCES `document_types`(`document_type_id`),
+  FOREIGN KEY (`role_id`) REFERENCES `roles`(`role_id`)
 );
 
-CREATE TABLE `estados_solicitud` (
-  `id_estados` INT AUTO_INCREMENT PRIMARY KEY,
-  `estados` VARCHAR(30)
+CREATE TABLE `application_statuses` (
+  `status_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `status_name` VARCHAR(30)
 );
 
-CREATE TABLE `Solicitudes` (
-  `id_solicitud` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_persona` INT,
-  `id_estados` INT,
-  `monto_solicitado` DECIMAL(10, 0),
-  `fecha_solicitud` DATE,
-  FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`),
-  FOREIGN KEY (`id_estados`) REFERENCES `estados_solicitud`(`id_estados`)
+CREATE TABLE `applications` (
+  `application_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `person_id` INT,
+  `status_id` INT,
+  `requested_amount` DECIMAL(10, 0),
+  `application_date` DATE,
+  FOREIGN KEY (`person_id`) REFERENCES `people`(`person_id`),
+  FOREIGN KEY (`status_id`) REFERENCES `application_statuses`(`status_id`)
 );
 
-CREATE TABLE `tipo_contraro` (
-  `id_tipo_contrato` INT AUTO_INCREMENT PRIMARY KEY,
-  `contrato` VARCHAR(20)
+CREATE TABLE `contract_types` (
+  `contract_type_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `contract_name` VARCHAR(20)
 );
 
-CREATE TABLE `empleos` (
-  `id_empleo` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_tipo_contrato` INT,
-  `id_persona` INT,
-  `empresa` VARCHAR(100),
-  `cargo` VARCHAR(100),
-  `fecha_inicio` DATE,
-  `fecha_fin` DATE,
-  `salario` DECIMAL(10, 0),
-  FOREIGN KEY (`id_tipo_contrato`) REFERENCES `tipo_contraro`(`id_tipo_contrato`),
-  FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
+CREATE TABLE `jobs` (
+  `job_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `contract_type_id` INT,
+  `person_id` INT,
+  `company` VARCHAR(100),
+  `position` VARCHAR(100),
+  `start_date` DATE,
+  `end_date` DATE,
+  `salary` DECIMAL(10, 0),
+  FOREIGN KEY (`contract_type_id`) REFERENCES `contract_types`(`contract_type_id`),
+  FOREIGN KEY (`person_id`) REFERENCES `people`(`person_id`)
 );
 
-CREATE TABLE `historial_credito` (
-  `id_historial_credito` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_persona` INT,
-  `dias_mora` INT,
-  `total_creditos` INT,
-  `creditos_incumplidos` INT,
-  FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
+CREATE TABLE `credit_history` (
+  `credit_history_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `person_id` INT,
+  `days_in_arrears` INT,
+  `total_credits` INT,
+  `defaulted_credits` INT,
+  FOREIGN KEY (`person_id`) REFERENCES `people`(`person_id`)
 );
 
-CREATE TABLE `usuarios` (
-  `id_usuarios` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_persona` INT,
-  `nombre_usuario` VARCHAR(25),
-  `contraseña` VARCHAR(10),
-  FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
+CREATE TABLE `users` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `username` VARCHAR(25),
+  `password` VARCHAR(10)
 );
 
-CREATE TABLE `informacion_financiera` (
-  `id_informacion` INT AUTO_INCREMENT PRIMARY KEY,
-  `id_persona` INT,
-  `id_empleo` INT,
-  `ingresos_mensuales` DECIMAL(10, 0),
-  `egresos_mensuales` DECIMAL(10, 0),
-  `deudas` DECIMAL(10, 0),
-  `patrimonio` DECIMAL(10, 0),
-  `fecha_actualizacion` DATE,
-  FOREIGN KEY (`id_persona`) REFERENCES `Persona`(`id_persona`)
+CREATE TABLE `financial_information` (
+  `financial_info_id` INT AUTO_INCREMENT PRIMARY KEY,
+  `person_id` INT,
+  `job_id` INT,
+  `monthly_income` DECIMAL(10, 0),
+  `monthly_expenses` DECIMAL(10, 0),
+  `debts` DECIMAL(10, 0),
+  `assets` DECIMAL(10, 0),
+  `last_updated` DATE,
+  FOREIGN KEY (`person_id`) REFERENCES `people`(`person_id`)
 );
 
-INSERT INTO tipo_documento (tipo) VALUES ('C.C');
-
-INSERT INTO rol (rol) VALUES ('Cliente');
-
-INSERT INTO nivel_riesgos (nivel_riesgos) VALUES ('Alto');
-
-INSERT INTO estados_solicitud (estados) VALUES ('Pendiente');
-
-INSERT INTO tipo_contraro (contrato) VALUES ('Indefinido');
-
-INSERT INTO Persona (
-  id_persona, id_documento, id_rol, nombres, apellidos, telefono, email, direccion
-) VALUES (
-  1111111111, 1, 1, 'Pepito', 'Pérez', '3101234567', 'pepito.perez@gmail.com', 'calle 72A'
-);
-
-INSERT INTO Solicitudes (
-  id_persona, id_estados, monto_solicitado, fecha_solicitud
-) VALUES (
-  1111111111, 1, 5000000, '2025-04-17'
-);
-
-INSERT INTO evaluacion_riesgos (
-  id_solicitud, id_nivel, fecha_evaluacion, score
-) VALUES (
-  1, 1, '2025-04-17', 450.5
-);
-
-INSERT INTO empleos (
-  id_tipo_contrato, id_persona, empresa, cargo, fecha_inicio, fecha_fin, salario
-) VALUES (
-  1, 1111111111, 'prueba', 'prueba', '2020-01-15', '2025-04-01', 3500000
-);
-
-INSERT INTO informacion_financiera (
-  id_persona, id_empleo, ingresos_mensuales, egresos_mensuales, deudas, patrimonio, fecha_actualizacion
-) VALUES (
-  1111111111, 1, 3500000, 1500000, 1200000, 10000000, '2025-04-17'
-);
-
-INSERT INTO historial_credito (
-  id_persona, dias_mora, total_creditos, creditos_incumplidos
-) VALUES (
-  1111111111, 45, 3, 1
-);
-
-INSERT INTO usuarios (
-  id_persona, nombre_usuario, contraseña
-) VALUES (
-  1111111111, 'pepito.perez', '123456789'
-);
-
-RENAME TABLE `usuarios` TO `users`;
-ALTER TABLE `users` CHANGE `id_usuarios` `id` INT NOT NULL AUTO_INCREMENT;
-ALTER TABLE `users` DROP FOREIGN KEY `usuarios_ibfk_1`;
-ALTER TABLE `users` DROP COLUMN `id_persona`;
-ALTER TABLE `users` CHANGE `nombre_usuario` `username` VARCHAR(25);
-ALTER TABLE `users` CHANGE `contraseña` `password` VARCHAR(10);
+INSERT INTO `users` (`username`, `password`) VALUES
+('admin', 'admin'),
+('alex', 'alex'),
+('harold', 'harold123'),
+('santiago', 'santiago*'),
+('laura', 'laura123*'),
+('sebastian', 'Sebastian*'),
+('camila', 'camila123'),
+('juan', 'juan+'),
+('paula', 'paula'),
+('daniela', 'daniela123');
