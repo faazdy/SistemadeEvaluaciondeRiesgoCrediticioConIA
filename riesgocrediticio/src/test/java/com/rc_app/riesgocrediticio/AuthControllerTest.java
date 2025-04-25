@@ -5,9 +5,10 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,46 +23,96 @@ import com.rc_app.riesgocrediticio.service.UserService;
 class AuthControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc mockMvc; // Se utiliza para simular peticiones HTTP y obtener respuestas
 
-    @MockBean
-    private UserService userService;
+    @MockitoBean
+    private UserService userService; // Mock de UserService para inyectar en el controlador
 
-    @MockBean
-    private PasswordEncoder passwordEncoder;
+    @MockitoBean
+    private PasswordEncoder passwordEncoder; // Mock de PasswordEncoder para simular la comparación de contraseñas
 
+    /**
+     * Test para verificar el inicio de sesión exitoso.
+     * Aquí el usuario existe y las credenciales son correctas.
+     */
     @Test
-    @WithMockUser(username = "testuser", roles = "USER") // No necesitas especificar la contraseña aquí, ya que se está simulando
+    @WithMockUser(username = "testuser", roles = "USER")
     void loginSuccessTest() throws Exception {
         String username = "testuser";
-        String rawPassword = "1234";
-        String encodedPassword = "$2a$10$abcdefghijk1234567890..."; // Asegúrate de que sea un hash válido
+        String rawPassword = "1234"; // Contraseña en texto plano
 
+        // Usamos un encoder real en lugar del mock para simular un hash real de la contraseña
+        PasswordEncoder realEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = realEncoder.encode(rawPassword); // Codificamos la contraseña
+
+        // Creamos un usuario simulado
         User user = new User();
         user.setUsername(username);
         user.setPassword(encodedPassword);
 
-        // Simulamos el comportamiento del servicio y la comparación de contraseñas
+        // Simulamos que el servicio encuentra al usuario con las credenciales correctas
         when(userService.findByUsername(username)).thenReturn(user);
-        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
+        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true); // Mock de la verificación de la contraseña
 
+        // Realizamos la petición GET a "/auth/login"
         mockMvc.perform(get("/auth/login")
                 .param("username", username)
                 .param("password", rawPassword))
-                .andExpect(status().isOk())  // Esperamos el estado 200 OK
-                .andExpect(content().string("Login correcto"));  // Asegúrate de que la respuesta sea exactamente esta
+                .andExpect(status().isOk()) // Esperamos un código 200 OK
+                .andExpect(content().string("Login correcto")); // Y un mensaje de éxito
     }
 
+    /**
+     * Test para verificar el fallo de inicio de sesión cuando las credenciales son incorrectas.
+     */
     @Test
     @WithMockUser(username = "testuser", roles = "USER")
     void loginFailureTest() throws Exception {
         String username = "testuser";
-        String wrongPassword = "wrongpassword";
+        String wrongPassword = "wrongpassword"; // Contraseña incorrecta
 
+        // Realizamos la petición GET a "/auth/login"
         mockMvc.perform(get("/auth/login")
                 .param("username", username)
                 .param("password", wrongPassword))
-                .andExpect(status().isUnauthorized()) // Esperamos un 401 si la contraseña es incorrecta
-                .andExpect(content().string("Credenciales inválidas"));
+                .andExpect(status().isUnauthorized()) // Esperamos un código 401 Unauthorized
+                .andExpect(content().string("Credenciales inválidas")); // Y un mensaje de error
+    }
+
+    /**
+     * Test para verificar que el inicio de sesión falle si el usuario no se encuentra en la base de datos.
+     */
+    @Test
+    @WithMockUser(username = "unknownuser", roles = "USER")
+    void loginUserNotFoundTest() throws Exception {
+        String username = "unknownuser"; // Usuario inexistente
+        String password = "1234"; // Contraseña cualquiera
+
+        // Simulamos que el usuario no fue encontrado
+        when(userService.findByUsername(username)).thenReturn(null);
+
+        // Realizamos la petición GET a "/auth/login"
+        mockMvc.perform(get("/auth/login")
+                .param("username", username)
+                .param("password", password))
+                .andExpect(status().isUnauthorized()) // Esperamos un código 401 Unauthorized
+                .andExpect(content().string("Credenciales inválidas")); // Y un mensaje de error
+    }
+
+    /**
+     * Test para verificar que el inicio de sesión falle si los campos de usuario o contraseña están vacíos.
+     */
+    @Test
+    @WithMockUser(username = "anyuser", roles = "USER")
+    void loginEmptyFieldsTest() throws Exception {
+        String username = ""; // Campo vacío para el nombre de usuario
+        String password = ""; // Campo vacío para la contraseña
+
+        // Realizamos la petición GET a "/auth/login"
+        mockMvc.perform(get("/auth/login")
+                .param("username", username)
+                .param("password", password))
+                .andExpect(status().isUnauthorized()) // Esperamos un código 401 Unauthorized
+                .andExpect(content().string("Credenciales inválidas")); // Y un mensaje de error
     }
 }
