@@ -30,6 +30,10 @@ public class FinancialInfo {
     @Column(name = "last_updated")
     private LocalDate lastUpdated;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id") // <<--- Esto conecta FinancialInfo con User
+    private User user;
+
     // Getters y Setters
 
     public Long getId() {
@@ -86,5 +90,13 @@ public class FinancialInfo {
 
     public void setLastUpdated(LocalDate lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

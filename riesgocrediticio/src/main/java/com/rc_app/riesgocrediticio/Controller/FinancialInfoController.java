@@ -4,47 +4,89 @@ import com.rc_app.riesgocrediticio.model.FinancialInfo;
 import com.rc_app.riesgocrediticio.model.User;
 import com.rc_app.riesgocrediticio.repository.FinancialInfoRepository;
 import com.rc_app.riesgocrediticio.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/financial")
 public class FinancialInfoController {
 
-    @Autowired
-    private FinancialInfoRepository repository;
+    private final FinancialInfoRepository financialInfoRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public FinancialInfoController(FinancialInfoRepository financialInfoRepository,
+            UserRepository userRepository) {
+        this.financialInfoRepository = financialInfoRepository;
+        this.userRepository = userRepository;
+    }
 
+    /**
+     * Endpoint para guardar información financiera
+     * 
+     * @param info           Datos financieros a guardar
+     * @param authentication Objeto de autenticación de Spring Security
+     * @return Respuesta con estado de la operación
+     */
     @PostMapping
-    public ResponseEntity<String> guardarInfoFinanciera(@RequestBody FinancialInfo info, Principal principal) {
-        // Obtener el usuario
-        User user = userRepository.findByUsername(principal.getName())
+    public ResponseEntity<String> guardarInfoFinanciera(@RequestBody FinancialInfo info,
+            Authentication authentication) {
+        User user = getUserFromAuthentication(authentication);
+
+        // Versión mejorada de la asignación de usuario
+        assignUserToFinancialInfo(info, user);
+
+        financialInfoRepository.save(info);
+        return ResponseEntity.ok("Información financiera guardada exitosamente");
+    }
+
+    /**
+     * Endpoint para obtener información financiera por ID de usuario
+     * 
+     * @param userId         ID del usuario a consultar
+     * @param authentication Objeto de autenticación de Spring Security
+     * @return Datos financieros del usuario o error 404 si no existen
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<FinancialInfo> obtenerInfoFinanciera(
+            @PathVariable Long userId,
+            Authentication authentication) {
+
+        validateUserAccess(userId, authentication);
+
+        // Reemplaza el método del repository por:
+        return financialInfoRepository.findAll().stream()
+                .filter(fi -> fi.getUser().getId().equals(userId))
+                .findFirst()
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Métodos auxiliares privados para mejor organización
+
+    private User getUserFromAuthentication(Authentication authentication) {
+        return userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
 
-        // Asignar el usuario - ELIMINA ESTA LÍNEA SI NO EXISTE SETUSER
-        // info.setUser(user); // SOLO si existe este método en FinancialInfo
+    private void validateUserAccess(Long requestedUserId, Authentication authentication) {
+        User currentUser = getUserFromAuthentication(authentication);
+        if (!currentUser.getId().equals(requestedUserId)) {
+            throw new SecurityException("Acceso no autorizado a datos financieros");
+        }
+    }
 
-        // Alternativa segura usando reflexión
+    private void assignUserToFinancialInfo(FinancialInfo info, User user) {
         try {
             // Intenta con setUser primero
             info.getClass().getMethod("setUser", User.class).invoke(info, user);
-        } catch (Exception e1) {
+        } catch (Exception e) {
             try {
-                // Si falla, intenta con setUsuario
+                // Si falla, intenta con setUsuario (alternativa en español)
                 info.getClass().getMethod("setUsuario", User.class).invoke(info, user);
-            } catch (Exception e2) {
-                throw new RuntimeException("No se encontró método para asignar usuario a FinancialInfo", e2);
+            } catch (Exception ex) {
+                throw new IllegalStateException("No se pudo asignar el usuario a la información financiera", ex);
             }
         }
-
-        // Guardar la información
-        FinancialInfo savedInfo = repository.save(info);
-
-        // Retornar respuesta
-        return ResponseEntity.ok("Información guardada exitosamente");
     }
 }
