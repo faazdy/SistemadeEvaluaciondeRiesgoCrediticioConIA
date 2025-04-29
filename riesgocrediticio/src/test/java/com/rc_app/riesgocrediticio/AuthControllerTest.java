@@ -4,33 +4,35 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import com.rc_app.riesgocrediticio.controller.AuthController;
 import com.rc_app.riesgocrediticio.model.User;
 import com.rc_app.riesgocrediticio.service.UserService;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@WebMvcTest(AuthController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc; // Se utiliza para simular peticiones HTTP y obtener respuestas
 
-    @MockitoBean
+    @MockBean
     private UserService userService; // Mock de UserService para inyectar en el controlador
 
-    @MockitoBean
+    @MockBean
     private PasswordEncoder passwordEncoder; // Mock de PasswordEncoder para simular la comparación de contraseñas
 
+    
     /**
      * Test para verificar el inicio de sesión exitoso.
      * Aquí el usuario existe y las credenciales son correctas.
@@ -116,3 +118,4 @@ class AuthControllerTest {
                 .andExpect(content().string("Credenciales inválidas")); // Y un mensaje de error
     }
 }
+
