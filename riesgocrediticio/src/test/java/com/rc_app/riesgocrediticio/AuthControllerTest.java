@@ -4,7 +4,6 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -26,13 +25,10 @@ class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc; // Se utiliza para simular peticiones HTTP y obtener respuestas
 
-    @MockBean
     private UserService userService; // Mock de UserService para inyectar en el controlador
 
-    @MockBean
     private PasswordEncoder passwordEncoder; // Mock de PasswordEncoder para simular la comparación de contraseñas
 
-    
     /**
      * Test para verificar el inicio de sesión exitoso.
      * Aquí el usuario existe y las credenciales son correctas.
@@ -43,7 +39,8 @@ class AuthControllerTest {
         String username = "testuser";
         String rawPassword = "1234"; // Contraseña en texto plano
 
-        // Usamos un encoder real en lugar del mock para simular un hash real de la contraseña
+        // Usamos un encoder real en lugar del mock para simular un hash real de la
+        // contraseña
         PasswordEncoder realEncoder = new BCryptPasswordEncoder();
         String encodedPassword = realEncoder.encode(rawPassword); // Codificamos la contraseña
 
@@ -54,7 +51,8 @@ class AuthControllerTest {
 
         // Simulamos que el servicio encuentra al usuario con las credenciales correctas
         when(userService.findByUsername(username)).thenReturn(user);
-        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true); // Mock de la verificación de la contraseña
+        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true); // Mock de la verificación de la
+                                                                                      // contraseña
 
         // Realizamos la petición GET a "/auth/login"
         mockMvc.perform(get("/auth/login")
@@ -65,7 +63,8 @@ class AuthControllerTest {
     }
 
     /**
-     * Test para verificar el fallo de inicio de sesión cuando las credenciales son incorrectas.
+     * Test para verificar el fallo de inicio de sesión cuando las credenciales son
+     * incorrectas.
      */
     @Test
     @WithMockUser(username = "testuser", roles = "USER")
@@ -82,7 +81,8 @@ class AuthControllerTest {
     }
 
     /**
-     * Test para verificar que el inicio de sesión falle si el usuario no se encuentra en la base de datos.
+     * Test para verificar que el inicio de sesión falle si el usuario no se
+     * encuentra en la base de datos.
      */
     @Test
     @WithMockUser(username = "unknownuser", roles = "USER")
@@ -102,7 +102,8 @@ class AuthControllerTest {
     }
 
     /**
-     * Test para verificar que el inicio de sesión falle si los campos de usuario o contraseña están vacíos.
+     * Test para verificar que el inicio de sesión falle si los campos de usuario o
+     * contraseña están vacíos.
      */
     @Test
     @WithMockUser(username = "anyuser", roles = "USER")
@@ -118,4 +119,3 @@ class AuthControllerTest {
                 .andExpect(content().string("Credenciales inválidas")); // Y un mensaje de error
     }
 }
-

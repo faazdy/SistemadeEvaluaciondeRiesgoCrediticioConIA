@@ -9,13 +9,10 @@ import com.rc_app.riesgocrediticio.repository.UserRepository;
 // Importaciones para pruebas y utilidades
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -37,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Carga el contexto completo de Spring Boot y utiliza MockMvc para simular
  * peticiones HTTP. Se mockean las dependencias de base de datos.
  */
-@ExtendWith(SpringExtension.class)
+
 @SpringBootTest // Levanta todo el contexto de Spring Boot
 @AutoConfigureMockMvc // Configura automáticamente MockMvc
 public class FinancialInfoControllerTest {
@@ -45,10 +42,8 @@ public class FinancialInfoControllerTest {
     @Autowired
     private MockMvc mockMvc; // Cliente simulado para hacer peticiones HTTP
 
-    @MockBean
     private FinancialInfoRepository financialInfoRepository; // Simula la capa de persistencia
 
-    @MockBean
     private UserRepository userRepository; // Simula la búsqueda de usuarios
 
     /**
@@ -84,14 +79,14 @@ public class FinancialInfoControllerTest {
         // Assert: Verificar que el método save() fue llamado una vez
         verify(financialInfoRepository, times(1)).save(any(FinancialInfo.class));
     }
-    
-   /**
+
+    /**
      * Prueba el endpoint GET /api/financial/{userId}.
      * 
      * Simula una petición autenticada que obtiene la información financiera
      * de un usuario y valida la respuesta.
      */
-     @Test
+    @Test
     @WithMockUser(username = "juanperez") // Simula un usuario autenticado
     public void testObtenerInfoFinanciera() throws Exception {
         Long userId = 1L;
@@ -108,10 +103,9 @@ public class FinancialInfoControllerTest {
         User user = new User();
         user.setId(userId);
         user.setUsername("juanperez");
-        
+
         // Asociar el usuario al objeto FinancialInfo
         info.setUser(user);
-
 
         // Configuración de los mocks
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
@@ -120,10 +114,10 @@ public class FinancialInfoControllerTest {
         // Realizar la solicitud y verificar el JSON de la respuesta
         mockMvc.perform(get("/api/financial/{userId}", userId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullName").value("Juan Perez"))  // Verificar fullName
-                .andExpect(jsonPath("$.monthlyIncome").value(1000))    // Verificar monthlyIncome
-                .andExpect(jsonPath("$.monthlyExpenses").value(500))   // Verificar monthlyExpenses
-                .andExpect(jsonPath("$.totalDebt").value(2000))       // Verificar totalDebt
-                .andExpect(jsonPath("$.netWorth").value(15000));      // Verificar netWorth
+                .andExpect(jsonPath("$.fullName").value("Juan Perez")) // Verificar fullName
+                .andExpect(jsonPath("$.monthlyIncome").value(1000)) // Verificar monthlyIncome
+                .andExpect(jsonPath("$.monthlyExpenses").value(500)) // Verificar monthlyExpenses
+                .andExpect(jsonPath("$.totalDebt").value(2000)) // Verificar totalDebt
+                .andExpect(jsonPath("$.netWorth").value(15000)); // Verificar netWorth
     }
 }
