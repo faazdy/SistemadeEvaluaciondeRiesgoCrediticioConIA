@@ -1,0 +1,34 @@
+
+.contenedorIA {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; /* Alinea verticalmente */
+    gap: 1em;
+    margin: 2em;
+}
+
+.IAtext {
+    flex-grow: 1;
+    flex-basis: 25em;
+}
+.ParrafoIA{
+    font-size: 2em;
+}
+.recuadroIA{
+    width: 19em;
+    height: 20em;
+    display: flex;
+    background-color: aqua;
+    border: solid 4px black;
+    border-radius: 20px 0 20px 0;
+    flex-direction: column;
+    justify-content: space-between; /* Esto empuja el input hacia abajo */
+    align-items: center;
+}
+.imputIA{
+    margin: 10px 0 ;
+    width: 90%;
+    border-radius:10px 0 10px 0 ;
+    padding: 4px;
+
+}
