@@ -1,34 +1,64 @@
 
-.contenedorIA {
+.inicio-ContIA {
     display: flex;
     flex-wrap: wrap;
-    align-items: center; /* Alinea verticalmente */
+    align-items: center;
     gap: 1em;
     margin: 2em;
 }
 
-.IAtext {
+.inicio-IATxt {
+    background-color: rgb(227, 227, 227);
+    border-radius: 15px;
+    padding: 30px;
     flex-grow: 1;
     flex-basis: 25em;
 }
-.ParrafoIA{
+.inicio-ParIA{
     font-size: 2em;
+    text-align: justify;
+    
 }
-.recuadroIA{
+.inicio-RecIA{
     width: 19em;
     height: 20em;
     display: flex;
-    background-color: aqua;
-    border: solid 4px black;
+    background-color:  rgb(227, 227, 227);
+    border: 2px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
     border-radius: 20px 0 20px 0;
     flex-direction: column;
-    justify-content: space-between; /* Esto empuja el input hacia abajo */
+    justify-content: space-between; 
     align-items: center;
 }
-.imputIA{
+.inicio-IptIA{
     margin: 10px 0 ;
     width: 90%;
     border-radius:10px 0 10px 0 ;
     padding: 4px;
-
+}
+.inicio-CrRsgos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.8em;
+    justify-content: center;
+    padding: 1.2em;
+    margin: 4em;
+}
+.inicio-TpsRiesgo {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(227, 227, 227);
+    border: 2px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border-radius: 20px 0 20px 0;
+    padding: 1em;
+    width: 15em;
+    margin: 2em auto;
+}
+p{
+    text-align: justify;
 }

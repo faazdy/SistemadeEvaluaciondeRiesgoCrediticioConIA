@@ -1,0 +1,16 @@
+.riesgo-contenedor{
+    background-color:  rgb(227, 227, 227);
+    border: 5px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
+    width: 22em;
+    height: 15em;
+    padding: 1em;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 20px 0px 20px 0px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.riesgo-tarjeta:hover{
+    transform: scale(1.05);
+}

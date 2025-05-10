@@ -3,21 +3,21 @@ import "./navbar.css";
 function navbar() {
   return (
     <div>
-      <nav>
+      <nav class="navbar-nav">
         <h1>Riesgo Crediticio</h1>
-        <ul>
+        <ul class="navbar-ul">
           <li>
-            <a class="botonI" href="../../pages/incio/inicio.jsx">
+            <a class="navbar-botonI" href="../../pages/incio/inicio.jsx">
               Inicio
             </a>
           </li>
           <li>
-            <a class="botonI" href="perfil">
+            <a class="navbar-botonI" href="perfil">
               Perfil
             </a>
           </li>
           <li>
-            <a class="botonI" href="IA">
+            <a class="navbar-botonI" href="IA">
               IA
             </a>
           </li>
