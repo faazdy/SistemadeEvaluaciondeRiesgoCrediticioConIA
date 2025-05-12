@@ -1,0 +1,7 @@
+historialPago,ingresos,deuda,creditosActivos,edad,tiempoEmpleo,montoSolicitado,nivel_riesgo
+Bueno,5000,2000,2,30,5,1500,Riesgo Bajo
+Regular,3000,2500,4,25,3,2000,Riesgo Medio
+Malo,2000,3000,6,22,1,5000,Riesgo Alto
+Bueno,7000,1000,1,35,7,2000,Riesgo Bajo
+Regular,5000,3000,3,28,4,2500,Riesgo Medio
+Malo,3000,5000,5,22,2,4000,Riesgo Alto
