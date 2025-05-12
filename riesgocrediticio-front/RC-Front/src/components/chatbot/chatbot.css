@@ -1,0 +1,14 @@
+.div-chat-contenedor {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #1995d7; 
+  color: white;
+  padding: 1em;
+  border-radius: 20px;
+  font-family: sans-serif;
+  font-weight: bold;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  cursor: pointer;
+}

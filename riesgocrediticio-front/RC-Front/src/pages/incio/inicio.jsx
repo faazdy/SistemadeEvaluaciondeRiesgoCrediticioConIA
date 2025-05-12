@@ -1,6 +1,8 @@
 import "./inicio.css";
 import Navbar from "../../components/navbar/navbar";
 import Riesgo from "../../components/tipoRiesgo/riesgo";
+import Chatbot from "../../components/chatbot/chatbot";
+import Footer from "../../components/footer/footer";
 
 function Inicio() {
   return (
@@ -18,8 +20,8 @@ function Inicio() {
             encarga del análisis por ti!
           </p>
         </article>
-        <div class="inicio-RecIA">
-          <h2>Laurita</h2>
+        <div class="inicio-PerfilIA">
+          <h2>Perfil</h2>
 
           <input type="text" class="inicio-IptIA" />
         </div>
@@ -58,29 +60,12 @@ function Inicio() {
             inteligentes.”
           </p>
         </Riesgo>
-        <Riesgo>
-          <h3>4 Riesgo Alto (Malo)</h3>
-          <br />
-          <p>
-            Descripción: Historial con múltiples retrasos, moras o deudas sin
-            pagar. Posible sobreendeudamiento. Probabilidad de incumplimiento:
-            Alta. <br />
-            <br /> “Alerta roja. Es momento de actuar y mejorar tu situación.”
-          </p>
-        </Riesgo>
-        <Riesgo>
-          <h3>5 Riesgo Muy Alto (Crítico)</h3>
-          <br />
-          <p>
-            Descripción: Sin historial crediticio confiable o con múltiples
-            reportes negativos. Alto nivel de morosidad. Probabilidad de
-            incumplimiento: Muy alta.
-            <br />
-            <br /> “¡Cuidado! Tu acceso al crédito está en riesgo. Laurita puede
-            ayudarte a mejorar.”
-          </p>
-        </Riesgo>
       </div>
+      <br />
+      <div class="chatbot">
+        <Chatbot />
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,0 +1,25 @@
+.footer-contenedor {
+
+    background-color: #cfcdc8;
+    width: auto;
+    height: 10em;
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap; /* ¡Aquí está la magia! */
+    gap: 10px;        /* Espacio entre los hijos */
+    padding: 10px;
+    
+}
+
+.footer-contenido {
+    
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95em;
+    line-height: 1.4;
+    flex: 1 1 200px;
+    background-color: #4CAF50;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    text-align: center;
+}

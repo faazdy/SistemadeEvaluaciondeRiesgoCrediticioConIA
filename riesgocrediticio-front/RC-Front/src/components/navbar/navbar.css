@@ -1,7 +1,7 @@
 .navbar-nav {
     
     background: #dddbd6;
-        border: 5px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
+    border: 5px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
     padding: 1em;
     display: flex;
@@ -14,7 +14,7 @@
 .navbar-ul {
     list-style: none;
     display: flex;
-    gap: 2rem;
+    gap: 1  rem;
     margin: 0;
     padding: 0.2em;
 }

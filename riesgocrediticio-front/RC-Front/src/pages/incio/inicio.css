@@ -19,7 +19,7 @@
     text-align: justify;
     
 }
-.inicio-RecIA{
+.inicio-PerfilIA{
     width: 19em;
     height: 20em;
     display: flex;
@@ -52,7 +52,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(227, 227, 227);
-    border: 2px solid transparent; /* Esto es solo para evitar que se vea el borde sólido */
+    border: 2px solid transparent;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 20px 0 20px 0;
     padding: 1em;
