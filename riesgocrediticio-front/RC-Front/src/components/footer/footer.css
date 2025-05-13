@@ -1,8 +1,8 @@
 .footer-contenedor {
-
-    background-color: #cfcdc8;
+    border-radius: 20px 20px 0 0;
+    background-color: #211191;
     width: auto;
-    height: 10em;
+    height: auto;
     z-index: 100;
     display: flex;
     flex-wrap: wrap; /* ¡Aquí está la magia! */
@@ -15,11 +15,15 @@
     
     display: flex;
     flex-direction: column;
-    font-size: 0.95em;
-    line-height: 1.4;
+    font-size: 1em;
+    line-height: 1.5;
     flex: 1 1 200px;
-    background-color: #4CAF50;
-    color: rgb(0, 0, 0);
+    background-color: #00000000;
+    color: rgb(229, 229, 229);
     padding: 20px;
     text-align: center;
+    list-style: none;
+    justify-content: center;  /* Centrado vertical */
+    align-items: center; 
 }
+
