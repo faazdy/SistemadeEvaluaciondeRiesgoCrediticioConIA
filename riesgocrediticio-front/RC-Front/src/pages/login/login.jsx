@@ -1,59 +1,87 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./login.css";
 
-const login = () => {
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("Intentando iniciar sesión...");
+
+    try {
+      const response = await axios.get("http://localhost:8080/auth/login", {
+        params: { username, password },
+      });
+
+      if (response.status === 200) {
+        console.log("Login exitoso:", response.data);
+        setError("");
+        navigate("/inicio"); // redirige a la vista principal
+      } else {
+        setError("Credenciales inválidas");
+      }
+    } catch (error) {
+      const mensaje = error.response?.data || "Error de conexión al servidor";
+      setError(`Error al iniciar sesión: ${mensaje}`);
+    }
+  };
+
   return (
-    <div class="login-contenedor">
-      <div class="card">
-        <div class="card2">
-          <form class="form">
+    <div className="login-contenedor">
+      <div className="card">
+        <div className="card2">
+          <form className="form" onSubmit={handleLogin}>
             <p id="heading">Login</p>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"></path>
+
+            {error && (
+              <div style={{ color: "red", marginBottom: "10px", textAlign: "center" }}>
+                {error}
+              </div>
+            )}
+
+            <div className="field">
+              <svg className="input-icon" viewBox="0 0 16 16">
+                <path d="..." />
               </svg>
               <input
                 type="text"
-                class="input-field"
+                className="input-field"
                 placeholder="Username"
-                autocomplete="off"
+                autoComplete="off"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </div>
-            <div class="field">
-              <svg
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                height="16"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
-                class="input-icon"
-              >
-                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+
+            <div className="field">
+              <svg className="input-icon" viewBox="0 0 16 16">
+                <path d="..." />
               </svg>
               <input
                 type="password"
-                class="input-field"
+                className="input-field"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
-            <div class="btn">
-              <button class="button1">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </button>
-              <button class="button2">Sign Up</button>
+
+            <div className="btn">
+              <button className="button1" type="submit">Login</button>
+              <button className="button2" type="button">Sign Up</button>
             </div>
-            <button class="button3">Forgot Password</button>
+            <button className="button3" type="button">Forgot Password</button>
           </form>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default login;

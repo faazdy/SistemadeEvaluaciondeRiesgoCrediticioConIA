@@ -34,6 +34,7 @@ public class AuthController {
         User user = userService.findByUsername(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.ok("Login correcto" );
+            
         }
         System.out.println("Credenciales inválidas para el usuario: " + username);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
