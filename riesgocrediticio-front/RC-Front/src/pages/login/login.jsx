@@ -26,8 +26,8 @@ export default function Login() {
         setError("Credenciales inválidas");
       }
     } catch (error) {
-      const mensaje = error.response?.data || "Error de conexión al servidor";
-      setError(`Error al iniciar sesión: ${mensaje}`);
+      const mensaje = error.response?.data || "Error De Servidor";
+      setError(`Error Login: ${mensaje}`);
     }
   };
 
@@ -39,7 +39,13 @@ export default function Login() {
             <p id="heading">Login</p>
 
             {error && (
-              <div style={{ color: "red", marginBottom: "10px", textAlign: "center" }}>
+              <div
+                style={{
+                  color: "red",
+                  marginBottom: "10px",
+                  textAlign: "center",
+                }}
+              >
                 {error}
               </div>
             )}
@@ -74,14 +80,19 @@ export default function Login() {
             </div>
 
             <div className="btn">
-              <button className="button1" type="submit">Login</button>
-              <button className="button2" type="button">Sign Up</button>
+              <button className="button1" type="submit">
+                Login
+              </button>
+              <button className="button2" type="button">
+                Sign Up
+              </button>
             </div>
-            <button className="button3" type="button">Forgot Password</button>
+            <button className="button3" type="button">
+              Forgot Password
+            </button>
           </form>
         </div>
       </div>
     </div>
   );
 }
-

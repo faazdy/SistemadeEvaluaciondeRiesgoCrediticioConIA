@@ -12,12 +12,12 @@ function Inicio() {
         <article class="inicio-IATxt">
           <p class="inicio-ParIA">
             ¿Estás listo para descubrir tu nivel crediticio? Te presentamos a
-            <b> Laurita</b>, una <b>Inteligencia Artificial</b> diseñada para
+            <b> Stromper</b>, una <b>Inteligencia Artificial</b> diseñada para
             ayudarte a evaluar tu nivel de riesgo financiero. Gracias a su
-            capacidad de análisis, <b>Laurita</b> te hará unas preguntas
+            capacidad de análisis, <b>Stromper</b> te hará unas preguntas
             sencillas y, con base en tus respuestas, te ofrecerá una evaluación
-            precisa. Así podrás tomar decisiones importantes en tu vida con
-            mayor seguridad.
+            precisa. Así podrás tomar decisiones importantes en tu vida
+            financiera con mayor seguridad.
             <br /> <b>¡Ella se encarga del análisis por ti!</b>
           </p>
         </article>
@@ -102,4 +102,3 @@ function Inicio() {
 }
 
 export default Inicio;
-

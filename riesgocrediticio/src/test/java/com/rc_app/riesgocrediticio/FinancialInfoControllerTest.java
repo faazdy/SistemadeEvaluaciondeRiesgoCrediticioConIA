@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest // Levanta todo el contexto de Spring Boot
 @AutoConfigureMockMvc // Configura automáticamente MockMvc
-public class financialInfoControllerTest {
+public class FinancialInfoControllerTest {
 
     @Autowired
     private MockMvc mockMvc; // Cliente simulado para hacer peticiones HTTP
