@@ -7,7 +7,8 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 20px 0 20px 0;
-  margin: 1em 2em 2em;
+  width: 83%;
+  margin: 1em auto 2em;
 }
 
 .navbar-ul {

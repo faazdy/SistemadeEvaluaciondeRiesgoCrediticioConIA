@@ -4,7 +4,7 @@ function chatbot() {
   return (
     <div>
       <div class="div-chat-contenedor">
-        <div>IA</div>
+        <div>ia</div>
       </div>
     </div>
   );
