@@ -1,3 +1,4 @@
 com\evaluacion\DatabaseConnection.class
+com\evaluacion\Chatbot.class
 com\evaluacion\App.class
 com\evaluacion\EvaluadorRiesgo.class
