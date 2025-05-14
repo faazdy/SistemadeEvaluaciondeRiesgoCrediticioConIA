@@ -93,13 +93,13 @@ function Inicio() {
           </p>
         </Riesgo>
       </div>
-      <br />
-      <div class="chatbot">
-        <Chatbot />
-      </div>
+      {}
+      <Chatbot />
+
       <Footer />
     </div>
   );
 }
 
 export default Inicio;
+

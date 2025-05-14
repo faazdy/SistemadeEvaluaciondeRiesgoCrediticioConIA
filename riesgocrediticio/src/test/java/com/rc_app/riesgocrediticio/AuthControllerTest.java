@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AuthControllerTest {
+class authControllerTest {
 
     @Autowired
     private MockMvc mockMvc; // Se utiliza para simular peticiones HTTP y obtener respuestas

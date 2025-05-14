@@ -45,28 +45,42 @@ public class Chatbot {
         }
     }
 
-    private static String enviarDatosAI(String jsonInput) {
-        try {
-            // Usar URI en lugar de URL para evitar la advertencia en Java 20+
-            URI miUri = URI.create("http://localhost:5000/evaluar_riesgo");
-            URL miUrl = miUri.toURL();
+    public static String enviarDatosAI(String jsonInput) {
+    try {
+        URI miUri = URI.create("http://localhost:5000/evaluar_riesgo");
+        URL miUrl = miUri.toURL();
 
-            HttpURLConnection conn = (HttpURLConnection) miUrl.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
+        HttpURLConnection conn = (HttpURLConnection) miUrl.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
 
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(jsonInput.getBytes());
-                os.flush();
-            }
-
-            // Manejo mejorado de la respuesta con BufferedReader
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                return br.readLine();
-            }
-        } catch (Exception e) {
-            return "Error al conectar con la IA: " + e.getMessage();
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(jsonInput.getBytes());
+            os.flush();
         }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+    StringBuilder responseBuilder = new StringBuilder();
+    String line;
+    while ((line = br.readLine()) != null) {
+        responseBuilder.append(line.trim());
     }
+    String jsonRespuesta = responseBuilder.toString();
+    
+    // Ahora procesamos el JSON
+    if (jsonRespuesta.contains("riesgo")) {
+        int indice = jsonRespuesta.indexOf(":") + 1;
+        String valor = jsonRespuesta.substring(indice).replaceAll("[^0-9]", "");
+        return "Riesgo: " + valor;
+    } else {
+        return "Respuesta inválida: " + jsonRespuesta;
+    }
+}
+
+    } catch (Exception e) {
+        return "Error al conectar con la IA: " + e.getMessage();
+    }
+}
+
 }
